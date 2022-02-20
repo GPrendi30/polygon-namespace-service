@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 // string utils from hardhat
 import {StringUtils} from "./libraries/StringUtils.sol";
-import {Base64} from "./libraries/Base64.sol";
+import { Base64 } from "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
 // openzeppelin ERC721 contract
@@ -12,11 +12,11 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract Domains is ERC721URIStorage {
-    using Counters for Counter.Counter;
+    using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
     // top level domain
-    string public TLD;
+    string public tld;
 
     // nft svg
     string svgPartOne =
@@ -33,7 +33,7 @@ contract Domains is ERC721URIStorage {
         payable
         ERC721("Weekend Name Service", "WKND")
     {
-        TLD = _tld;
+        tld = _tld;
         console.log("This is my domain contract. Nice.");
     }
 
@@ -57,7 +57,7 @@ contract Domains is ERC721URIStorage {
         uint256 _price = price(name);
         require(msg.value >= _price, "Not enough to cover the price");
 
-        string memory _name = string(abi.encodePacked(name, ".", TLD));
+        string memory _name = string(abi.encodePacked(name, ".", tld));
         string memory finalSvg = string(
             abi.encodePacked(svgPartOne, _name, svgPartTwo)
         );
@@ -84,7 +84,7 @@ contract Domains is ERC721URIStorage {
                         '", "description": "A domain on the Weekend name service", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(finalSvg)),
                         '","length":"',
-                        strLen,
+                        strlen,
                         '"}'
                     )
                 )
